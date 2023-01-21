@@ -1,15 +1,17 @@
 import axios from 'axios';
 import sleep from "sleep";
-import {bot, resultList, sendTelegramMessage} from "./bot.js";
+import { resultList, sendTelegramMessage } from "./bot.js";
+import { argv } from 'node:process';
 
 const instance = axios.create({
     headers: {
-//
+        'X-Pimpay-Eshop-Api-Token' : argv[2],
+        'X-PimPay-Eshop-Api-Signature' : argv[3]
     },
     timeout: 15000
 });
 
-let links = [
+export let links = [
     {
         link: 'https://api.pimpay.ru',
         namespace: 'main',
@@ -61,7 +63,7 @@ async function apiRequest(link, namespace, n) {
 }
 
 async function start() {
-    for (let k = 0; k < 500; k++) {
+    for (let k = 0; k < 1000; k++) {
         for (let i = 0; i < links.length; i++) {
             await apiRequest(links[i].link, links[i].namespace, i);
         }
@@ -70,14 +72,5 @@ async function start() {
 
     process.exit(1);
 }
-
-bot.on('message', async (msg) => {
-        if (msg.text.toString().toLowerCase().indexOf('!stat') === 0) {
-            await sendTelegramMessage('Метро люблино, работаем. Статистика за этот ран:' + '\n'
-                + resultList(links))
-        }
-    }
-
-);
 
 await start();
