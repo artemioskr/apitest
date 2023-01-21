@@ -10,7 +10,7 @@ export async function sendTelegramMessage(text) {
 export function resultList(links) {
     let str = '';
     for (let i = 0; i < links.length; i++) {
-        str += links[i].link + ' : ' + links[i].counter + ' \n' ;
+        str += links[i].link + ' : ' + links[i].failCounter + ' \n' ;
     }
 
     return str;

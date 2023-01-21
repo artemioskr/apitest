@@ -4,7 +4,7 @@ import {bot, resultList, sendTelegramMessage} from "./bot.js";
 
 const instance = axios.create({
     headers: {
-// token and signature
+//
     },
     timeout: 15000
 });
