@@ -66,7 +66,7 @@ async function start() {
             await apiRequest(links[i].link, links[i].namespace, i);
         }
     }
-    await sendTelegramMessage('im done' + '\n' + resultList())
+    await sendTelegramMessage('im done' + '\n' + resultList(links))
 
     process.exit(1);
 }
