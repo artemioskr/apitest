@@ -1,3 +1,3 @@
 npm install 
 
-node index.js
+node index.js tokenApi signatureApi tokenTg 
