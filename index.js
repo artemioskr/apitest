@@ -1,49 +1,83 @@
 import axios from 'axios';
 import sleep from "sleep";
-import TelegramBot from "node-telegram-bot-api";
+import {bot, resultList, sendTelegramMessage} from "./bot.js";
 
-const token = '5890562657:AAG80xEGYCcE3rrR1ttZtNY_7UQUBSmawbA';
-const bot = new TelegramBot(token, {polling: true});
-const instance = axios.create();
-instance.defaults.timeout = 15000;
+const instance = axios.create({
+    headers: {
+// token and signature
+    },
+    timeout: 15000
+});
 
-async function sendTelegramMessage(text) {
-    await bot.sendMessage('-897255779',text);
-}
-async function apiRequest(link, namespace) {
+let links = [
+    {
+        link: 'https://api.pimpay.ru',
+        namespace: 'main',
+        failCounter: 0,
+    },
+    {
+        link: 'https://api.pimpay.ru/eshop/v1_0/docs/method/getReports',
+        namespace: 'eshop',
+        failCounter: 0,
+    },
+    {
+        link: 'https://api.pimpay.ru/eshop/v1_0/getRussianPostVerificationList?from=2022-12-07&to=2022-12-07',
+        namespace: 'eshop',
+        failCounter: 0,
+    },
+    {
+        link: 'https://api.pimpay.ru/eshop/v1_0Test/docs/method/getReports',
+        namespace: 'test',
+        failCounter: 0,
+    },
+    {
+        link: 'https://api.pimpay.ru/eshop/v1_0Test/ping',
+        namespace: 'test',
+        failCounter: 0,
+    },
+    {
+        link: 'https://api.pimpay.ru/eshop/v1_0Test/getRussianPostVerificationList?from=2022-12-07&to=2022-12-07',
+        namespace: 'test',
+        failCounter: 0,
+    }
+];
+
+async function apiRequest(link, namespace, n) {
     await instance.get(link).then(function (resp) {
         if(resp.status === 200) {
-            console.log(new Date().toString(),link, resp.status)
+            console.log(new Date().toString(),links[n].link, resp.status, resp.data, n)
         } else {
-            throw "ALERT ALERT ALERT " + link + ' ' + resp.status
+            throw "ALERT ALERT ALERT " + links[n].link + ' ' + resp.status
         }
     }).catch(function (err) {
-        sendTelegramMessage('[' + namespace.toUpperCase() + '] ' + link + '\n' + err.toString());
-        console.log("ALERT ALERT ALERT " + link + ' ' + err.toString());
+        links[n].failCounter = links[n].failCounter + 1;
+        sendTelegramMessage('[' + namespace.toUpperCase() + '] ' + '\n'
+            + err.toString() + '\n'
+            + 'За этот ран я упал ' + links[n].failCounter + ' раз'
+        );
     })
 
-    await sleep.sleep(3);
+    await sleep.sleep(1);
 }
-async function letsGo() {
-    for (let i = 0; i < 10; i++) {
-        await apiRequest('https://api.pimpay.ru/','main');
-        await apiRequest('https://api.pimpay.ru/accounting', 'accounting');
-        await apiRequest('https://api.pimpay.ru/accounting/compositeaccounts', 'accounting');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/methods','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getRussianPostPaymentsByPeriod','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getRussianPostPayments','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getDeliveryServicePaymentsByPeriod','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getDeliveryServicePayments','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getAllPaymentsAndStatuses','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/upsertRussianPostOrders','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getRussianPostVerificationList','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getRussianPostVerificationRows','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getCurierServiceVerificationList','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getReports','eshop');
-        await apiRequest('https://api.pimpay.ru/eshop/v1_0/docs/method/getCurierServiceVerificationRows','eshop');
+
+async function start() {
+    for (let k = 0; k < 500; k++) {
+        for (let i = 0; i < links.length; i++) {
+            await apiRequest(links[i].link, links[i].namespace, i);
+        }
     }
-    await sendTelegramMessage('im done')
+    await sendTelegramMessage('im done' + '\n' + resultList())
+
     process.exit(1);
 }
 
-await letsGo();
+bot.on('message', async (msg) => {
+        if (msg.text.toString().toLowerCase().indexOf('!stat') === 0) {
+            await sendTelegramMessage('Метро люблино, работаем. Статистика за этот ран:' + '\n'
+                + resultList(links))
+        }
+    }
+
+);
+
+await start();
