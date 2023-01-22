@@ -52,7 +52,7 @@ async function apiRequest(url, namespace, n) {
     }).catch(function (err) {
         urlsList[n].failCounter = urlsList[n].failCounter + 1;
 
-        console.log('ALERT ALERT ALERT ' + urlsList[n].url + ' ' + resp.status)
+        console.log('ALERT ALERT ALERT ' + urlsList[n].url + ' ' + err.toString())
         sendTelegramMessage('[' + namespace.toUpperCase() + '] ' + '\n'
             + err.toString() + '\n'
             + 'За этот ран я упал ' + urlsList[n].failCounter + ' раз'
