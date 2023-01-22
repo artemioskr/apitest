@@ -11,7 +11,7 @@ const instance = axios.create({
     timeout: 15000,
 });
 
-export let urls = [
+export let urlsList = [
     {
         url: 'https://api.pimpay.ru',
         namespace: 'main',
@@ -47,15 +47,15 @@ export let urls = [
 async function apiRequest(url, namespace, n) {
     await instance.get(url).then(function (resp) {
         if(resp.status === 200) {
-            console.log(new Date().toString(),urls[n].url, resp.status, resp.data, n)
+            console.log(new Date().toString(),urlsList[n].url, resp.status, resp.data, n)
         }
     }).catch(function (err) {
-        urls[n].failCounter = urls[n].failCounter + 1;
+        urlsList[n].failCounter = urlsList[n].failCounter + 1;
 
-        console.log('ALERT ALERT ALERT ' + urls[n].url + ' ' + resp.status)
+        console.log('ALERT ALERT ALERT ' + urlsList[n].url + ' ' + resp.status)
         sendTelegramMessage('[' + namespace.toUpperCase() + '] ' + '\n'
             + err.toString() + '\n'
-            + 'За этот ран я упал ' + urls[n].failCounter + ' раз'
+            + 'За этот ран я упал ' + urlsList[n].failCounter + ' раз'
         );
     })
 
@@ -64,12 +64,12 @@ async function apiRequest(url, namespace, n) {
 
 async function start() {
     for (let k = 0; k < 1000; k++) {
-        for (let i = 0; i < urls.length; i++) {
-            await apiRequest(urls[i].url, urls[i].namespace, i);
+        for (let i = 0; i < urlsList.length; i++) {
+            await apiRequest(urlsList[i].url, urlsList[i].namespace, i);
         }
     }
 
-    await sendTelegramMessage('im done' + '\n' + resultList(urls))
+    await sendTelegramMessage('im done' + '\n' + resultList(urlsList))
     process.exit(1);
 }
 

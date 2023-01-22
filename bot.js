@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import { argv } from 'node:process';
-import { urls } from "./index.js";
+import { urlsList } from "./index.js";
 
 const token = argv[4];
 export const bot = new TelegramBot(token, {polling: true});
@@ -21,7 +21,7 @@ export function resultList(urls) {
 bot.on('message', async (msg) => {
         if (msg.text.toString().toLowerCase().indexOf('!stat') === 0) {
             await sendTelegramMessage('Метро люблино, работаем. Статистика за этот ран:' + '\n'
-                + resultList(urls))
+                + resultList(urlsList))
         }
     }
 );
