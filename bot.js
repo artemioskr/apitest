@@ -12,7 +12,7 @@ export async function sendTelegramMessage(text) {
 export function resultList(urls) {
     let str = '';
     for (let i = 0; i < urls.length; i++) {
-        str += urls[i].url + ' : ' + urls[i].failCounter + ' \n' ;
+        str += urls[i].url + '  fail: ' + urls[i].failCounter + ' pass: ' + urls[i].passCounter + ' \n' ;
     }
 
     return str;
