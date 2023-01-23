@@ -1,8 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
-import { argv } from 'node:process';
 import { urlsList } from "./index.js";
+import config from './config.json' assert { type: "json" };
 
-const token = argv[4];
+const token = config.botToken;
 export const bot = new TelegramBot(token, {polling: true});
 
 export async function sendTelegramMessage(text) {

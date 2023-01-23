@@ -1,12 +1,12 @@
 import axios from 'axios';
 import sleep from "sleep";
 import { resultList, sendTelegramMessage } from "./bot.js";
-import { argv } from 'node:process';
+import config from './config.json' assert { type: "json" };
 
 const instance = axios.create({
     headers: {
-        'X-Pimpay-Eshop-Api-Token' : argv[2],
-        'X-PimPay-Eshop-Api-Signature' : argv[3]
+        'X-Pimpay-Eshop-Api-Token' : config.apiToken,
+        'X-PimPay-Eshop-Api-Signature' : config.apiSignature,
     },
     timeout: 15000,
 });
