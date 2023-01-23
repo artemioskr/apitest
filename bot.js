@@ -6,7 +6,7 @@ const token = config.botToken;
 export const bot = new TelegramBot(token, {polling: true});
 
 export async function sendTelegramMessage(text) {
-    await bot.sendMessage('-897255779',text);
+    await bot.sendMessage(config.chatId,text);
 }
 
 export function resultList(urls) {
