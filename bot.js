@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
-import { urlsList } from "./index.js";
 import config from './config.json' assert { type: "json" };
+import { urlsList } from "./urlsList.js";
 
 const token = config.botToken;
 export const bot = new TelegramBot(token, {polling: true});
