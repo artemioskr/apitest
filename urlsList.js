@@ -31,7 +31,7 @@ export let urlsList = [
     },
     {
         url: 'https://api.pimpay.ru/accounting/ping',
-        namespace: 'accountingtest',
+        namespace: 'accounting',
         failCounter: 0,
         passCounter: 0,
     },
