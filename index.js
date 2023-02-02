@@ -33,7 +33,7 @@ async function apiRequest(n) {
 }
 
 async function start() {
-    for (let k = 0; k < 500; k++) {
+    for (let k = 0; k < 1000; k++) {
         for (let i = 0; i < urlsList.length; i++) {
             await apiRequest(i);
         }

@@ -19,8 +19,9 @@ export function resultList(urls) {
 }
 
 bot.on('message', async (msg) => {
-        if (msg.text.toString().toLowerCase().indexOf('!stat') === 0) {
-            await sendTelegramMessage('Метро люблино, работаем. Статистика за этот ран:' + '\n'
+    console.log()
+        if (msg.text !== undefined && msg.text.toString().toLowerCase().indexOf('!stat') === 0) {
+            await sendTelegramMessage('Статистика за этот ран:' + '\n'
                 + resultList(urlsList))
         }
     }
