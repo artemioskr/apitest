@@ -27,13 +27,14 @@ async function apiRequest(n) {
             + err.toString() + '\n'
             + 'За этот ран я упал ' + urlsList[n].failCounter + ' раз'
         );
+        sleep.sleep(5);
     })
 
     await sleep.sleep(1);
 }
 
 async function start() {
-    for (let k = 0; k < 1000; k++) {
+    for (let k = 0; k < 3000; k++) {
         for (let i = 0; i < urlsList.length; i++) {
             await apiRequest(i);
         }

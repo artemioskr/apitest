@@ -35,4 +35,22 @@ export let urlsList = [
         failCounter: 0,
         passCounter: 0,
     },
+    // {
+    //     url: 'http://api.pp-task-3070.stage.pp.ppdev.ru/eshop/v1_0/docs/method/getReports',
+    //     namespace: 'stage-3070',
+    //     failCounter: 0,
+    //     passCounter: 0,
+    // },
+    // {
+    //     url: 'http://api.pp-task-3070.stage.pp.ppdev.ru/eshop/v1_0/getRussianPostVerificationList?from=2022-12-07&to=2022-12-07',
+    //     namespace: 'stage-3070',
+    //     failCounter: 0,
+    //     passCounter: 0,
+    // },
+    // {
+    //     url: 'http://api.pp-task-3070.stage.pp.ppdev.ru',
+    //     namespace: 'stage-3070',
+    //     failCounter: 0,
+    //     passCounter: 0,
+    // },
 ];
